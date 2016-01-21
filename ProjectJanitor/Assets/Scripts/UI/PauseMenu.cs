@@ -7,57 +7,37 @@ using UnityEngine.SceneManagement;
 public class PauseMenu : MonoBehaviour {
 
     public Canvas pauseMenu;
+
+    public Image savePanel;
+    public Image loadPanel;
+
     public Button resumeButton;
     public Button saveButton;
     public Button loadButton;
-    //public Button cancelButton;
+    public Button cancelButton;
     public Button quitButton;
-    //public FirstPersonController fps;
-    public Animator pauseButtonsAnimator;
-    //public RectTransform pauseButtons;
-    //public short step;
 
-    private Vector3 currentPosition;
+    public Animator pauseButtonsAnimator;
+
+    /* Test */
+    public Texture2D cursorTexture;
+    public CursorMode cursorMode = CursorMode.Auto;
+    public Vector2 hotSpot = Vector2.zero;
+    /* Test */
 
 	// Use this for initialization
 	void Start () {
         pauseMenu.enabled = false;
-        currentPosition = new Vector3();
     }
 	
 	// Update is called once per frame
 	void Update () {
         if (Input.GetKeyDown("escape"))
         {
+            savePanel.enabled = false;
+            loadPanel.enabled = false;
             TogglePauseMenu();
-            //fps.enabled = !pauseMenu.enabled;
         }
-
-        //Debug.Log(currentPosition);
-        //Debug.Log(pauseButtons.position + " " + pauseButtons.localPosition);
-
-/*
-        if (pauseMenu.enabled)
-        {
-            if (!pauseButtons.localPosition.Equals(currentPosition))
-            {
-                //pauseButtons.position = Vector3.MoveTowards(pauseButtons.position, currentPosition, 5f * Time.deltaTime);
-                float x = pauseButtons.localPosition.x;
-
-                if (currentPosition.x < 0)
-                {
-                    x -= step;
-                }
-                else if(currentPosition.x > 0)
-                {
-                    x += step;
-                }
-
-                pauseButtons.localPosition = new Vector3(x, 0f, 0f);
-            }
-
-        }
-*/
     }
 
     void TogglePauseMenu()
@@ -66,6 +46,16 @@ public class PauseMenu : MonoBehaviour {
         ToggleTimeScale();
     }
 
+    void ToggleSavePanel()
+    {
+        savePanel.enabled = !savePanel.enabled;
+    }
+
+    void ToggleLoadPanel()
+    {
+        loadPanel.enabled = !loadPanel.enabled;
+    }
+    
     void ToggleTimeScale()
     {
         if (pauseMenu.enabled)
@@ -80,31 +70,28 @@ public class PauseMenu : MonoBehaviour {
 
     public void TestLeft()
     {
-        //Debug.Log("D�d� est une L�gende !");
-        //currentPosition = new Vector3(-200f, 0f, 0f);
         int pos = -1;
         pauseButtonsAnimator.SetInteger("Position", pos);
+        ToggleSavePanel();
     }
 
     public void TestRight()
     {
-        //Debug.Log("D�d� est une L�gende !");
-        //currentPosition = new Vector3(200f, 0f, 0f);
         int pos = 1;
         pauseButtonsAnimator.SetInteger("Position", pos);
+        ToggleLoadPanel();
     }
 
     public void ResumePress()
     {
-        //Debug.Log("D�d� est une L�gende !");
-        //currentPosition = new Vector3(0f, 0f, 0f);
         int pos = 0;
         pauseButtonsAnimator.SetInteger("Position", pos);
+        TogglePauseMenu();
     }
 
     public void QuitPress()
     {
-        //Application.LoadLevel("scn_MainMenu");
+        Time.timeScale = 1;
         SceneManager.LoadScene("scn_MainMenu");
     }
 
