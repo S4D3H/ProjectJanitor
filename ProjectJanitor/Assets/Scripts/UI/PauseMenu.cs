@@ -14,12 +14,12 @@ public class PauseMenu : MonoBehaviour {
     public Button resumeButton;
     public Button saveButton;
     public Button loadButton;
-    public Button cancelButton;
+    //public Button cancelButton;
     public Button quitButton;
 
     public Animator pauseButtonsAnimator;
 
-    /* Test */
+    /* Test 
     public Texture2D cursorTexture;
     public CursorMode cursorMode = CursorMode.Auto;
     public Vector2 hotSpot = Vector2.zero;
