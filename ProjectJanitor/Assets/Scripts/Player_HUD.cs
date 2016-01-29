@@ -14,9 +14,19 @@ public class Player_HUD : MonoBehaviour {
     public Text primeText;
     public Text secondText;
 
-    public Image test;
+    public AudioClip shootSound;
+    private AudioSource sourceSound;
+    
+    //public Image test;
     public Image armorBar;
     public Image lifeBar;
+
+    public HUD_ShowPopup cloudAie;
+    public HUD_ShowPopup cloudPV;
+    public HUD_ShowPopup cloudPrimeAmmo;
+    public HUD_ShowPopup cloudSecondAmmo;
+    public HUD_ShowPopup cloudArmor;
+
 
     private int maxHealth = 100;
     private int maxArmor = 100;
@@ -33,6 +43,11 @@ public class Player_HUD : MonoBehaviour {
         maxSecond = 30;
 	}
 
+    void Awake()
+    {
+        sourceSound = GetComponent<AudioSource>();
+    }
+
     // Update is called once per frame
     void Update() {
         Movement();
@@ -45,6 +60,7 @@ public class Player_HUD : MonoBehaviour {
         {
             Debug.Log("I shot with Primal Weapon");
             currentPrime -= 1;
+            sourceSound.PlayOneShot(shootSound);
         }
         if (Input.GetButtonDown("Fire2"))
         {
@@ -96,18 +112,24 @@ public class Player_HUD : MonoBehaviour {
         if(other.name == "Explosion_dmg")
         {
             currentHealth -= 10;
+            lifeBar.rectTransform.Translate(new Vector3(16f * Time.deltaTime, 0, 0));
+            cloudAie.Popup(1);
         }
         if(other.name == "Big_heal")
         {
             currentHealth += 10;
+            lifeBar.rectTransform.Translate(new Vector3(-16f * Time.deltaTime, 0, 0));
+            cloudPV.Popup(1);
         }
         if(other.name == "PrimeReload")
         {
             maxPrime += 100;
+            cloudPrimeAmmo.Popup(1);
         }
         if(other.name == "SecondReload")
         {
             maxSecond += 10;
+            cloudSecondAmmo.Popup(1);
         }
     }
 
@@ -119,13 +141,15 @@ public class Player_HUD : MonoBehaviour {
             if(currentHealth < maxHealth)
             {
                 currentHealth += 1;
-                test.rectTransform.Translate(new Vector3(-5f * Time.deltaTime, 0, 0));
-                lifeBar.rectTransform.Translate(new Vector3(-5f * Time.deltaTime, 0, 0));
+                //test.rectTransform.Translate(new Vector3(-8f * Time.deltaTime, 0, 0));
+                lifeBar.rectTransform.Translate(new Vector3(-8f * Time.deltaTime, 0, 0));
+                cloudPV.Popup(1);
             }
             if (currentHealth == maxHealth && currentArmor < maxArmor)
             {
                 currentArmor += 1;
-                armorBar.rectTransform.Translate(new Vector3(-5f * Time.deltaTime, 0, 0));
+                armorBar.rectTransform.Translate(new Vector3(-8f * Time.deltaTime, 0, 0));
+                cloudArmor.Popup(1);
             }
         }
         if (other.name == "Damage")
@@ -134,13 +158,15 @@ public class Player_HUD : MonoBehaviour {
             if (currentArmor > 0)
             {
                 currentArmor -= 1;
-                test.rectTransform.Translate(new Vector3(5f * Time.deltaTime, 0, 0));
-                armorBar.rectTransform.Translate(new Vector3(5f * Time.deltaTime, 0, 0));
+                //test.rectTransform.Translate(new Vector3(8f * Time.deltaTime, 0, 0));
+                armorBar.rectTransform.Translate(new Vector3(8f * Time.deltaTime, 0, 0));
+                cloudAie.Popup(1);
             }
             if (currentArmor <= 0 && currentHealth > 0)
             {
                 currentHealth -= 1;
-                lifeBar.rectTransform.Translate(new Vector3(5f * Time.deltaTime, 0, 0));
+                lifeBar.rectTransform.Translate(new Vector3(8f * Time.deltaTime, 0, 0));
+                cloudAie.Popup(1);
             }
         }
     }
